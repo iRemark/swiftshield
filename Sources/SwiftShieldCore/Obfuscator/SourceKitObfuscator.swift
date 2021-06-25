@@ -216,7 +216,7 @@ extension SourceKitObfuscator {
 //            randomString.append(nextChar)
 //        }
         
-        let randomString = RandomWords.getRandomWords()
+        var randomString = RandomWords.getRandomWords()
         if name.contains("Controllers") {
             randomString += "Controllers"
         }
