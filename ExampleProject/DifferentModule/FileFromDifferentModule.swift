@@ -1,5 +1,5 @@
 import Foundation
 
-public struct PaneRvalueLaserLocation {
-    public static func PrimeSplitterGatherQuality() {}
+public struct StructFromDifferentModule {
+    public static func methodFromDifferentModule() {}
 }

@@ -1,6 +1,6 @@
 import UIKit
 
-class AssignmentConsistConstructDelegate: UIResponder, UIWindowSceneDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo _: UISceneSession, options _: UIScene.ConnectionOptions) {
@@ -9,7 +9,7 @@ class AssignmentConsistConstructDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = TelnetForwardRodcastChainController(nibName: nil, bundle: nil)
+        window?.rootViewController = ViewController(nibName: nil, bundle: nil)
         window?.makeKeyAndVisible()
     }
 
