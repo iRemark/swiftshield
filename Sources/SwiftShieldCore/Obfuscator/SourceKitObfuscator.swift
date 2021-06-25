@@ -503,6 +503,32 @@ class ObfuscatorUtil {
         "majesty", "highess", "cable", "reply", "address","message", "switch", "plugin", "forward", "packet",
         "processor", "speed", "database", "letter", "assignment","batch", "bus", "cache", "operator", "concept",
         "explicit", "escape", "evaluate", "entity", "efficiency","demarshal", "declaration", "context", "container", "construct",
+        
+        
+        "bitmap", "bitwise", "brace", "refresh", "bracket","chain", "declaration", "template", "partial", "deduction",
+        "global", "generate", "fractal", "form", "facility","explicit", "encapsulation", "efficiency", "dispatch", "directive",
+        "hierarchy", "Illinois", "laser", "library", "lvalue","nested", "ordinary", "palette", "pane", "parse",
+        "pointer", "postfix", "preprocessor", "prime", "primitive","procedure", "radian", "rvalue", "signal", "splitter",
+        "Gopher", "frequency", "expertise", "exhibit", "diagram","complement", "coaxial", "benchmark", "template", "subroutine",
+        "independent", "judgment", "maintain", "matrix", "Map","Nyquist", "operand", "permit", "quality", "relay",
+        "repeater", "semaphores", "specify", "spanning", "strict","subset", "suppose", "Systolic", "theta", "transaction",
+        "update", "vertice", "through", "triggers", "transport","transmit", "phase", "Systolic", "statement", "starvation",
+        "software", "sequence", "robustness", "represent", "programs","purpose", "punctuation", "projection", "proficient", "maintanence",
+        "boundary", "capacity", "condition", "consist", "conform","cursor", "determine", "gather", "influence", "instruction",
+   
+//        "unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn","unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn",
+//        "unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn","unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn",
+//        "unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn","unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn",
+//        "unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn","unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn",
+//        "unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn","unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn",
+//        "unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn","unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn",
+//        "unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn","unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn",
+//        "unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn","unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn",
+//        "unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn","unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn",
+//        "unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn","unkonwn", "unkonwn", "unkonwn", "unkonwn", "unkonwn",
+        
+        
+        
     ]
 
 }
