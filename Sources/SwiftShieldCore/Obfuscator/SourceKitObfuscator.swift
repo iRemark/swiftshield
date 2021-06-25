@@ -203,17 +203,45 @@ extension SourceKitObfuscator {
         guard cachedResult == nil else {
             return cachedResult!
         }
-        let size = 32
-        let letters: [Character] = Array("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-        let numbers: [Character] = Array("0123456789")
-        let lettersAndNumbers = letters + numbers
-        var randomString = ""
-        for i in 0 ..< size {
-            let characters: [Character] = i == 0 ? letters : lettersAndNumbers
-            let rand = Int.random(in: 0 ..< characters.count)
-            let nextChar = characters[rand]
-            randomString.append(nextChar)
+        
+//        let size = 32
+//        let letters: [Character] = Array("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+//        let numbers: [Character] = Array("0123456789")
+//        let lettersAndNumbers = letters + numbers
+//        var randomString = ""
+//        for i in 0 ..< size {
+//            let characters: [Character] = i == 0 ? letters : lettersAndNumbers
+//            let rand = Int.random(in: 0 ..< characters.count)
+//            let nextChar = characters[rand]
+//            randomString.append(nextChar)
+//        }
+        
+        let randomString = RandomWords.getRandomWords()
+        if name.contains("Controllers") {
+            randomString += "Controllers"
         }
+        if name.contains("Controller") {
+            randomString += "Controller"
+        }
+        if name.contains("VC") {
+            randomString += "VC"
+        }
+        
+        if name.contains("Models") {
+            randomString += "Models"
+        }
+        if name.contains("Model") {
+            randomString += "Model"
+        }
+        
+        if name.contains("View") {
+            randomString += "View"
+        }
+        
+        if name.contains("Cell") {
+            randomString += "Cell"
+        }
+        
         guard dataStore.obfuscatedNames.contains(randomString) == false else {
             return obfuscate(name: name)
         }
@@ -366,4 +394,47 @@ extension SKResponseDictionary {
         }
         return isReference
     }
+}
+
+
+class RandomWords {
+    static func getRandomWords() -> String {
+        var randomWord = "";
+        if let wordsFilePath = Bundle.main.path(forResource: "web2", ofType: nil) {
+            do {
+                let wordsString = try String(contentsOfFile: wordsFilePath)
+
+                let wordLines = wordsString.components(separatedBy: .newlines)
+
+                let randomLine = wordLines[numericCast(arc4random_uniform(numericCast(wordLines.count)))]
+
+                randomWord = randomLine.capitalized;
+
+            } catch {
+                randomWord = randomString();
+            }
+        }
+        
+        if randomWord.count < 8 {
+            randomWord = randomWord + getRandomWords();
+        }
+        return randomWord;
+    }
+    
+    private static func randomString() -> String {
+        let letters: [Character] = Array("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        let numbers: [Character] = Array("0123456789")
+        let lettersAndNumbers = letters + numbers
+        var randomString = ""
+
+        let size = 32
+        for i in 0 ..< size {
+            let characters: [Character] = i == 0 ? letters : lettersAndNumbers
+            let rand = Int.random(in: 0 ..< characters.count)
+            let nextChar = characters[rand]
+            randomString.append(nextChar)
+        }
+        return randomString
+    }
+    
 }
