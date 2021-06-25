@@ -290,9 +290,9 @@ extension SourceKitObfuscator {
         req[keys.request] = requests.cursorinfo
         req[keys.compilerargs] = module.compilerArguments
         req[keys.usr] = usr
-        // We have to store the file of the USR because it looks CursorInfo doesn't returns USRs if you use the wrong one
-        //, except if it's a closed source framework. No idea why it works like that.
-        // Hopefully this won't break in the future.
+        // We have to store the file of the USR because it looks CursorInfo doesn"t returns USRs if you use the wrong one
+        //, except if it"s a closed source framework. No idea why it works like that.
+        // Hopefully this won"t break in the future.
         let file: File = dataStore.fileForUSR[usr] ?? module.sourceFiles.first!
         req[keys.sourcefile] = file.path
         let cursorInfo = try sourceKit.sendSync(req)
@@ -376,35 +376,47 @@ extension SKResponseDictionary {
 class ObfuscatorUtil {
     
     public static func obfuscate(_ originalName: String) -> String {
-        var randomWord = "";
-
-        let deskTopPath = FileManager.default.urls(
-            for: .desktopDirectory, in: .userDomainMask).map(\.path
-            ).first ?? ""
- 
-        if let wordsFilePath = Bundle.main.path(forResource: deskTopPath+"/web2", ofType: nil) {
-            do {
-                let wordsString = try String(contentsOfFile: wordsFilePath)
-                let wordLines = wordsString.components(separatedBy: .newlines)
-                let randomLine = wordLines[numericCast(arc4random_uniform(numericCast(wordLines.count)))]
-                randomWord = randomLine.capitalized;
-                
-            } catch {
-                print("⚠️ word get error")
-            }
-        } else {
-            print("⚠️ word resource error")
-        }
-        
-        if randomWord.count == 0 {
-            randomWord = generateRandomString();
-        }
-   
-        if randomWord.count < 8 {
-            randomWord = randomWord + obfuscate(originalName);
-        }
+        let randomWord = generateRandomWord();
         let result = addfeature(originalName: originalName, randomWord: randomWord)
         return result;
+    }
+    
+    private static func generateRandomWord(_ oldRandomWord: String = "") -> String {
+        if oldRandomWord.count > 20 {
+            return oldRandomWord;
+        }
+        
+        let randomWord = resoureWordList.randomElement()?.capitalized ?? ""
+   
+        
+//        let deskTopPath = FileManager.default.urls(
+//            for: .desktopDirectory, in: .userDomainMask).map(\.path
+//            ).first ?? ""
+//
+//        if let wordsFilePath = Bundle.main.path(forResource: deskTopPath+"/web2", ofType: ".txt") {
+//            do {
+//                let wordsString = try String(contentsOfFile: wordsFilePath)
+//                let wordLines = wordsString.components(separatedBy: .newlines)
+//                let randomLine = wordLines[numericCast(arc4random_uniform(numericCast(wordLines.count)))]
+//                randomWord = randomLine.capitalized;
+//
+//            } catch {
+//                print("⚠️ word get error")
+//            }
+//        } else {
+//            print("⚠️ word resource error")
+//        }
+//
+//        if randomWord.count == 0 {
+//            randomWord = generateRandomString();
+//        }
+        
+        if oldRandomWord.contains(randomWord) {
+            return generateRandomWord(oldRandomWord);
+            
+        } else {
+            return generateRandomWord(oldRandomWord + randomWord);
+        }
     }
     
     private static func generateRandomString() -> String {
@@ -425,7 +437,37 @@ class ObfuscatorUtil {
     
     private static func addfeature(originalName: String, randomWord: String) -> String {
         var newName = randomWord;
-        if originalName.contains("Controllers") {
+        
+        //model
+        if originalName.contains("Models") {
+            newName += "Models"
+            
+        } else if originalName.contains("Model") {
+            newName += "Model"
+        }
+        
+        //view
+        if originalName.contains("Button") {
+            newName += "Button"
+            
+        } else if originalName.contains("Label") {
+            newName += "Label"
+            
+        } else if originalName.contains("Cell") {
+            newName += "Cell"
+            
+        } else if originalName.contains("TableView") {
+            newName += "TableView"
+            
+        } else if originalName.contains("CollectionView") {
+            newName += "CollectionView"
+            
+        } else if originalName.contains("View") {
+            newName += "View"
+        }
+        
+        // controller
+        else if originalName.contains("Controllers") {
             newName += "Controllers"
             
         } else if originalName.contains("Controller") {
@@ -434,22 +476,33 @@ class ObfuscatorUtil {
         } else if originalName.contains("VC") {
             newName += "VC"
             
-        } else if originalName.contains("Models") {
-            newName += "Models"
-            
-        } else if originalName.contains("Model") {
-            newName += "Model"
-            
-        } else if originalName.contains("View") {
-            newName += "View"
-            
-        } else if originalName.contains("Cell") {
-            newName += "Cell"
-            
-        } else if originalName.contains("Delegate") {
-            newName += "Delegate"
         }
+        
+        //other
+        else if originalName.contains("Delegate") {
+            newName += "Delegate"
+            
+        } else if originalName.contains("Protocol") {
+            newName += "Protocol"
+            
+        }
+        
         
         return newName;
     }
+    
+    // https://www.cnblogs.com/goodboy-heyang/p/4947321.html
+    static let resoureWordList = [
+        "send", "check", "upload", "refresh", "attenuation","rest", "change", "add", "remove", "feature",
+        "bridge", "bandwidth", "rodcast", "byte", "Proxy","Local", "Server", "Notification", "Location", "Supper",
+        "collision", "client", "Ethernet", "forward", "Proxy","flooding", "latency", "physical", "access", "broadcast",
+        "newbie", "monitor", "poke", "social", "reliability","cabling", "topology", "Transfer", "multicast", "scalabity",
+        "cipher", "ciphertext", "cleartext", "crack", "cryptanalysis","firmware", "filter", "encryption", "Usenet", "Bottle",
+        "datagram", "whols", "trivial", "transfer", "gopher","uniform", "purpose", "Hypermedia", "Component", "Cluster",
+        "smiley", "router", "tablet", "smtp", "spam","telnet", "uucp", "zeroize", "peace", "council",
+        "majesty", "highess", "cable", "reply", "address","message", "switch", "plugin", "forward", "packet",
+        "processor", "speed", "database", "letter", "assignment","batch", "bus", "cache", "operator", "concept",
+        "explicit", "escape", "evaluate", "entity", "efficiency","demarshal", "declaration", "context", "container", "construct",
+    ]
+
 }
