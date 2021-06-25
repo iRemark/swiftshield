@@ -165,15 +165,11 @@ extension SourceKitObfuscator {
             let name = rawName.removingParameterInformation
             var obfuscatedName = self.obfuscate(name: name)
             
-            if obfuscatedName.count > 1 {
-                let startIndex = obfuscatedName.index(obfuscatedName.startIndex, offsetBy:0)
-                let endIndex = obfuscatedName.index(startIndex, offsetBy:1)
-                let result = obfuscatedName.replacingCharacters(
-                    in: startIndex..<endIndex, with:obfuscatedName.prefix(1).lowercased()
-                )
-                obfuscatedName = result
+            let isUppercase = Array(name).first?.isUppercase ?? false;
+            if isUppercase {
+                obfuscatedName = capitalized(obfuscatedName)
             }
-
+            
             self.logger.log("* Found reference of \(name) (USR: \(usr) at \(index.file.name) (\(line):\(column)) -> now \(obfuscatedName)")
             let reference = Reference(name: name, line: line, column: column)
             referenceArray.append(reference)
@@ -259,7 +255,21 @@ extension SourceKitObfuscator {
             if line == reference.line, column == reference.column {
                 previousReference = reference
                 let originalName = reference.name
-                let obfuscatedName = obfuscate(name: originalName)
+                var obfuscatedName = obfuscate(name: originalName)
+                
+                let isUppercase = Array(reference.name).first?.isUppercase ?? false;
+                if isUppercase {
+                    obfuscatedName = capitalized(obfuscatedName)
+                }
+                
+//                if reference.name.contains("SceneDelegate".lowercased()) ||
+//                    reference.name.lowercased().contains("AppDelegate".lowercased()) ||
+//                    reference.name.lowercased().contains("ViewController".lowercased()) ||
+//                    reference.name.lowercased().contains("SomeStruct".lowercased()) ||
+//                    reference.name.lowercased().contains("SomeEnum".lowercased()) {
+//                    obfuscatedName = obfuscatedName.capitalized;
+//                }
+                
                 let wasInternalKeyword = currentCharacter == "`"
                 for i in 1 ..< (originalName.count + (wasInternalKeyword ? 2 : 0)) {
                     charArray[currentCharIndex + i] = ""
@@ -281,6 +291,18 @@ extension SourceKitObfuscator {
             }
         }
         return charArray.joined()
+    }
+    
+    private func capitalized(_ obfuscatedName: String) -> String {
+        if obfuscatedName.count > 1 {
+            let startIndex = obfuscatedName.index(obfuscatedName.startIndex, offsetBy:0)
+            let endIndex = obfuscatedName.index(startIndex, offsetBy:1)
+            let result = obfuscatedName.replacingCharacters(
+                in: startIndex..<endIndex, with:obfuscatedName.prefix(1).uppercased()
+            )
+            return result
+        }
+        return ""
     }
 }
 
@@ -396,30 +418,45 @@ class ObfuscatorUtil {
             return oldRandomWord;
         }
         
-        let randomWord = resoureWordList.randomElement()?.capitalized ?? ""
-   
+        var randomWord = resoureWordList.randomElement()?.lowercased() ?? ""
+        if oldRandomWord.count > 0 {
+            randomWord = randomWord.capitalized
+        }
         
-//        let deskTopPath = FileManager.default.urls(
-//            for: .desktopDirectory, in: .userDomainMask).map(\.path
-//            ).first ?? ""
-//
-//        if let wordsFilePath = Bundle.main.path(forResource: deskTopPath+"/web2", ofType: ".txt") {
-//            do {
-//                let wordsString = try String(contentsOfFile: wordsFilePath)
-//                let wordLines = wordsString.components(separatedBy: .newlines)
-//                let randomLine = wordLines[numericCast(arc4random_uniform(numericCast(wordLines.count)))]
-//                randomWord = randomLine.capitalized;
-//
-//            } catch {
-//                print("⚠️ word get error")
-//            }
-//        } else {
-//            print("⚠️ word resource error")
-//        }
-//
-//        if randomWord.count == 0 {
-//            randomWord = generateRandomString();
-//        }
+        /**
+             if obfuscatedName.count > 1 {
+                 let startIndex = obfuscatedName.index(obfuscatedName.startIndex, offsetBy:0)
+                 let endIndex = obfuscatedName.index(startIndex, offsetBy:1)
+                 let result = obfuscatedName.replacingCharacters(
+                     in: startIndex..<endIndex, with:obfuscatedName.prefix(1).lowercased()
+                 )
+                 obfuscatedName = result
+             }
+         */
+        
+        /**
+         let deskTopPath = FileManager.default.urls(
+             for: .desktopDirectory, in: .userDomainMask).map(\.path
+             ).first ?? ""
+
+         if let wordsFilePath = Bundle.main.path(forResource: deskTopPath+"/web2", ofType: ".txt") {
+             do {
+                 let wordsString = try String(contentsOfFile: wordsFilePath)
+                 let wordLines = wordsString.components(separatedBy: .newlines)
+                 let randomLine = wordLines[numericCast(arc4random_uniform(numericCast(wordLines.count)))]
+                 randomWord = randomLine.capitalized;
+
+             } catch {
+                 print("⚠️ word get error")
+             }
+         } else {
+             print("⚠️ word resource error")
+         }
+
+         if randomWord.count == 0 {
+             randomWord = generateRandomString();
+         }
+         */
         
         if oldRandomWord.contains(randomWord) {
             return generateRandomWord(oldRandomWord);
