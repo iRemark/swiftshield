@@ -216,28 +216,7 @@ extension SourceKitObfuscator {
 //            randomString.append(nextChar)
 //        }
         
-        var randomString = RandomWords.getRandomWords()
-        if name.contains("Controllers") {
-            randomString += "Controllers"
-            
-        } else if name.contains("Controller") {
-            randomString += "Controller"
-            
-        } else if name.contains("VC") {
-            randomString += "VC"
-            
-        } else if name.contains("Models") {
-            randomString += "Models"
-            
-        } else if name.contains("Model") {
-            randomString += "Model"
-            
-        } else if name.contains("View") {
-            randomString += "View"
-            
-        } else if name.contains("Cell") {
-            randomString += "Cell"
-        }
+        let randomString = ObfuscatorUtil.obfuscate(name)
         
         guard dataStore.obfuscatedNames.contains(randomString) == false else {
             return obfuscate(name: name)
@@ -394,33 +373,41 @@ extension SKResponseDictionary {
 }
 
 
-class RandomWords {
-    static func getRandomWords() -> String {
+class ObfuscatorUtil {
+    
+    public static func obfuscate(_ originalName: String) -> String {
         var randomWord = "";
-        if let wordsFilePath = Bundle.main.path(forResource: "web2", ofType: nil) {
+
+        let deskTopPath = FileManager.default.urls(
+            for: .desktopDirectory, in: .userDomainMask).map(\.path
+            ).first ?? ""
+ 
+        if let wordsFilePath = Bundle.main.path(forResource: deskTopPath+"/web2", ofType: nil) {
             do {
                 let wordsString = try String(contentsOfFile: wordsFilePath)
-
                 let wordLines = wordsString.components(separatedBy: .newlines)
-
                 let randomLine = wordLines[numericCast(arc4random_uniform(numericCast(wordLines.count)))]
-
                 randomWord = randomLine.capitalized;
-
+                
             } catch {
-                randomWord = randomString();
+                print("⚠️ word get error")
             }
+        } else {
+            print("⚠️ word resource error")
         }
         
-        randomWord = randomString()+"0000";
-        
-//        if randomWord.count < 8 {
-//            randomWord = randomWord + getRandomWords();
-//        }
-        return randomWord;
+        if randomWord.count == 0 {
+            randomWord = generateRandomString();
+        }
+   
+        if randomWord.count < 8 {
+            randomWord = randomWord + obfuscate(originalName);
+        }
+        let result = addfeature(originalName: originalName, randomWord: randomWord)
+        return result;
     }
     
-    private static func randomString() -> String {
+    private static func generateRandomString() -> String {
         let letters: [Character] = Array("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
         let numbers: [Character] = Array("0123456789")
         let lettersAndNumbers = letters + numbers
@@ -436,4 +423,33 @@ class RandomWords {
         return randomString
     }
     
+    private static func addfeature(originalName: String, randomWord: String) -> String {
+        var newName = randomWord;
+        if originalName.contains("Controllers") {
+            newName += "Controllers"
+            
+        } else if originalName.contains("Controller") {
+            newName += "Controller"
+            
+        } else if originalName.contains("VC") {
+            newName += "VC"
+            
+        } else if originalName.contains("Models") {
+            newName += "Models"
+            
+        } else if originalName.contains("Model") {
+            newName += "Model"
+            
+        } else if originalName.contains("View") {
+            newName += "View"
+            
+        } else if originalName.contains("Cell") {
+            newName += "Cell"
+            
+        } else if originalName.contains("Delagate") {
+            newName += "Delagate"
+        }
+        
+        return newName;
+    }
 }
