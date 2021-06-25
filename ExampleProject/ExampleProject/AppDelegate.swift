@@ -1,7 +1,7 @@
 import UIKit
 
 @UIApplicationMain
-class SocialMessageAddByteSwitchDelegate: UIResponder, UIApplicationDelegate {
+class PhysicalBroadcastUniformDelegate: UIResponder, UIApplicationDelegate {
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         true
     }

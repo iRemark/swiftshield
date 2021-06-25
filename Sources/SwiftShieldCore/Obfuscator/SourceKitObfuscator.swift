@@ -163,7 +163,17 @@ extension SourceKitObfuscator {
             }
 
             let name = rawName.removingParameterInformation
-            let obfuscatedName = self.obfuscate(name: name)
+            var obfuscatedName = self.obfuscate(name: name)
+            
+            if obfuscatedName.count > 1 {
+                let startIndex = obfuscatedName.index(obfuscatedName.startIndex, offsetBy:0)
+                let endIndex = obfuscatedName.index(startIndex, offsetBy:1)
+                let result = obfuscatedName.replacingCharacters(
+                    in: startIndex..<endIndex, with:obfuscatedName.prefix(1).lowercased()
+                )
+                obfuscatedName = result
+            }
+
             self.logger.log("* Found reference of \(name) (USR: \(usr) at \(index.file.name) (\(line):\(column)) -> now \(obfuscatedName)")
             let reference = Reference(name: name, line: line, column: column)
             referenceArray.append(reference)

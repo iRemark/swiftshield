@@ -32,7 +32,7 @@
 					<key>UISceneConfigurationName</key>
 					<string>Default Configuration</string>
 					<key>UISceneDelegateClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).NotificationReliabilityDelegate</string>
+					<string>$(PRODUCT_MODULE_NAME).AssignmentConsistConstructDelegate</string>
 				</dict>
 			</array>
 		</dict>
