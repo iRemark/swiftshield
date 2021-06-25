@@ -4,7 +4,7 @@ import SwiftShieldCore
 
 struct Swiftshield: ParsableCommand {
     static var configuration = CommandConfiguration(
-        abstract: "SwiftShield 4.2.1",
+        abstract: "SwiftShield 【vpn-version】",
         subcommands: [Obfuscate.self, Deobfuscate.self]
     )
 }
