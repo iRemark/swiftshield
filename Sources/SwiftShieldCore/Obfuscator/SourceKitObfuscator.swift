@@ -219,26 +219,23 @@ extension SourceKitObfuscator {
         var randomString = RandomWords.getRandomWords()
         if name.contains("Controllers") {
             randomString += "Controllers"
-        }
-        if name.contains("Controller") {
+            
+        } else if name.contains("Controller") {
             randomString += "Controller"
-        }
-        if name.contains("VC") {
+            
+        } else if name.contains("VC") {
             randomString += "VC"
-        }
-        
-        if name.contains("Models") {
+            
+        } else if name.contains("Models") {
             randomString += "Models"
-        }
-        if name.contains("Model") {
+            
+        } else if name.contains("Model") {
             randomString += "Model"
-        }
-        
-        if name.contains("View") {
+            
+        } else if name.contains("View") {
             randomString += "View"
-        }
-        
-        if name.contains("Cell") {
+            
+        } else if name.contains("Cell") {
             randomString += "Cell"
         }
         
@@ -415,9 +412,11 @@ class RandomWords {
             }
         }
         
-        if randomWord.count < 8 {
-            randomWord = randomWord + getRandomWords();
-        }
+        randomWord = randomString()+"0000";
+        
+//        if randomWord.count < 8 {
+//            randomWord = randomWord + getRandomWords();
+//        }
         return randomWord;
     }
     
