@@ -446,8 +446,8 @@ class ObfuscatorUtil {
         } else if originalName.contains("Cell") {
             newName += "Cell"
             
-        } else if originalName.contains("Delagate") {
-            newName += "Delagate"
+        } else if originalName.contains("Delegate") {
+            newName += "Delegate"
         }
         
         return newName;
